@@ -292,6 +292,34 @@ def show_git_commands():
 ¡Después ve a Railway.app y conecta tu repositorio!
 """)
 
+def show_next_steps():
+    """Mostrar pasos siguientes"""
+    print("\n" + "="*60)
+    print("🚀 PRÓXIMOS PASOS PARA DESPLIEGUE")
+    print("="*60)
+    print("""
+1. 📝 PREPARAR ARCHIVOS:
+   python prepare_deploy.py
+
+2. 📤 SUBIR A GITHUB:
+   - Crear repositorio en GitHub
+   - git add .
+   - git commit -m "Listo para producción"
+   - git push
+
+3. 🚀 DESPLEGAR EN RAILWAY:
+   - Ir a railway.app
+   - Conectar repositorio GitHub
+   - Agregar PostgreSQL database
+   - Configurar variables de entorno
+
+4. 🌍 ACCEDER A TU APP:
+   - Tu app estará en: https://tu-app.railway.app
+   - Accesible desde cualquier parte del mundo
+
+¿Quieres que te ayude con algún paso específico?
+""")
+
 def main():
     """Función principal"""
     print("🚀 PREPARANDO APLICACIÓN PARA DESPLIEGUE")
@@ -337,36 +365,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
-return create_file('prepare_deploy.py', content)
-
-def show_next_steps():
-    """Mostrar pasos siguientes"""
-    print("\n" + "="*60)
-    print("🚀 PRÓXIMOS PASOS PARA DESPLIEGUE")
-    print("="*60)
-    print("""
-1. 📝 PREPARAR ARCHIVOS:
-   python prepare_deploy.py
-
-2. 📤 SUBIR A GITHUB:
-   - Crear repositorio en GitHub
-   - git add .
-   - git commit -m "Listo para producción"
-   - git push
-
-3. 🚀 DESPLEGAR EN RAILWAY:
-   - Ir a railway.app
-   - Conectar repositorio GitHub
-   - Agregar PostgreSQL database
-   - Configurar variables de entorno
-
-4. 🌍 ACCEDER A TU APP:
-   - Tu app estará en: https://tu-app.railway.app
-   - Accesible desde cualquier parte del mundo
-
-¿Quieres que te ayude con algún paso específico?
-""")
-
-if __name__ == "__main__":
-    show_next_steps()
