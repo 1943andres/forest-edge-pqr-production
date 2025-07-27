@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+venv/
+.env
+instance/
+logs/
+respaldos/
+*.backup
+.DS_Store
+*.log
+database.db
+procfile.txt

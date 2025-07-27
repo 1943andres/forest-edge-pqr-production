@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema PQR Forest Edge - Versión Empresarial</title>
+    <style>
+        /* CSS completo para el sistema */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+        }
+
+        /* Login Styles */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .form-control.large {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #34495e;
+            padding: 15px 40px;
+            color: white;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #34495e;
+            justify-content: center;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .nav-tab {
+            padding: 18px 28px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: #3498db;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e8ecef;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        .alert {
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* File Upload Styles Específicos */
+        .file-upload-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #e0e6ed;
+        }
+
+        .file-upload-section h4 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #cccccc;
+            padding-bottom: 8px;
+        }
+
+        .file-upload-item {
+            background: white;
+            border: 1px solid #d0d7e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-item label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .file-upload-item input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e0e6ed;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .file-status-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .required-field {
+            color: #e74c3c;
+        }
+
+        .optional-field {
+            color: #27ae60;
+        }
+
+        .date-range-info {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* AI Assistant Styles */
+        .ai-assistant {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            max-height: 600px;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-chat {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            max-height: 400px;
+        }
+
+        .ai-message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .ai-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .ai-message .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 12px;
+            font-size: 14px;
+        }
+
+        .ai-message.bot .avatar {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .ai-message.user .avatar {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .ai-message .text {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 280px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .ai-input-area {
+            padding: 18px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .ai-send-btn {
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .ai-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .ai-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .no-pqrs-message {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-size: 16px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .ai-assistant {
+                width: 95%;
+                right: 2.5%;
+                bottom: 90px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-header">
+            <h1>🌲 Forest Edge PQR</h1>
+            <p>Iniciar Sesión</p>
+        </div>
+        <div id="login-alert" class="alert hidden"></div>
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" class="form-control" required 
+                       placeholder="usuario@empresa.com" value="admin@alimentos-enriko.com">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Contraseña</label>
+                <input type="password" id="login-password" class="form-control" required 
+                       placeholder="••••••••" value="admin123">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Iniciar Sesión
+            </button>
+        </form>
+        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 14px;">
+            <strong>Usuarios de prueba:</strong><br>
+            📧 admin@alimentos-enriko.com / admin123<br>
+            🔬 calidad@alimentos-enriko.com / calidad123<br>
+            👤 cliente@kfc.com / cliente123<br>
+            📝 registrador@alimentos-enriko.com / registrador123
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="container hidden">
+        <header class="header">
+            <h1>🌲 Forest Edge PQR</h1>
+            <p>Sistema Integral de Gestión con IA y Trazabilidad Completa</p>
+        </header>
+
+        <div class="user-info">
+            <div>
+                <span>Bienvenido, <strong id="user-name">Usuario</strong></span>
+                <span class="user-role" id="user-role">Role</span>
+            </div>
+            <button class="btn btn-danger" onclick="logout()" style="margin: 0;">
+                Cerrar Sesión
+            </button>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('nueva-pqr')">📝 Nueva PQR</button>
+            <button class="nav-tab" onclick="showTab('seguimiento')">🔍 Seguimiento</button>
+            <button class="nav-tab" onclick="showTab('trazabilidad')">📋 Trazabilidad</button>
+            <button class="nav-tab" onclick="showTab('gestion-usuarios')">👥 Usuarios</button>
+            <button class="nav-tab" onclick="showTab('agentes')">👨‍💼 Agentes</button>
+            <button class="nav-tab" onclick="showTab('dashboard')">📊 Dashboard</button>
+        </nav>
+
+        <div id="nueva-pqr" class="tab-content active">
+            <h2>📝 Registrar Nueva PQR</h2>
+            <div id="pqr-alert" class="alert hidden"></div>
+            <form id="pqr-form" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3>📧 Información de Contacto</h3>
+                        
+                        <div class="form-group">
+                            <label for="email-contacto">Email de Contacto (Responsable PQR) *</label>
+                            <input type="email" id="email-contacto" class="form-control" required 
+                                   placeholder="responsable@empresa.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cliente">Cliente *</label>
+                            <select id="cliente" class="form-control" required>
+                                <option value="">Seleccionar cliente...</option>
+                                <option value="cubano-corral">Cubano Corral</option>
+                                <option value="inversiones-tatiana">Inversiones Tatiana</option>
+                                <option value="pappa-jones">Pappa Jones</option>
+                                <option value="invertinos">Invertinos</option>
+                                <option value="pizzamania">Pizzamania</option>
+                                <option value="kfc">KFC</option>
+                                <option value="lirulciza">Lirulciza</option>
+                                <option value="mister-bono">Mister Bono</option>
+                                <option value="cocinare">Cocinare</option>
+                                <option value="opalette">Opalette</option>
+                                <option value="saps">SAPS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>📋 Asunto de la PQR</h3>
+                        
+                        <div class="form-group">
+                            <label for="tipo-pqr">Tipo de PQR *</label>
+                            <select id="tipo-pqr" class="form-control" required>
+                                <option value="">Seleccionar tipo...</option>
+                                <option value="peticion">Petición</option>
+                                <option value="queja">Queja</option>
+                                <option value="reclamo">Reclamo</option>
+                                <option value="sugerencia">Sugerencia</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="asunto-detalle">Detalle del Asunto *</label>
+                            <input type="text" id="asunto-detalle" class="form-control" required 
+                                   placeholder="Ej: Problema de calidad en producto recibido">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>📦 Información del Producto</h3>
+                        
+                        <div class="form-group">
+                            <label for="nombre-producto">Nombre del Producto *</label>
+                            <input type="text" id="nombre-producto" class="form-control" required 
+                                   placeholder="Ej: Mezcla para Pancakes">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lote">Número de Lote *</label>
+                            <input type="text" id="lote" class="form-control" required 
+                                   placeholder="Ej: FE2024001">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha-vencimiento">Fecha de Vencimiento *</label>
+                            <input type="date" id="fecha-vencimiento" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cantidad-gramos">Cantidad en Gramos *</label>
+                            <input type="number" id="cantidad-gramos" class="form-control" required 
+                                   placeholder="1000" min="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="devolucion">Devolución *</label>
+                            <select id="devolucion" class="form-control" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="parcial">Parcial</option>
+                                <option value="completa">Completa</option>
+                                <option value="no-aplica">No Aplica</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>📝 Descripción Detallada</h3>
+                        
+                        <div class="form-group">
+                            <label for="descripcion">Descripción Completa del Problema *</label>
+                            <textarea id="descripcion" class="form-control large" required 
+                                      placeholder="Describa detalladamente el problema, incluyendo: &#10;- ¿Qué pasó exactamente?&#10;- ¿Cuándo ocurrió?&#10;- ¿Qué esperaba que sucediera?&#10;- ¿Cuál es el impacto?&#10;&#10;Sea lo más específico posible para una mejor atención."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCUMENTOS DE SOPORTE REQUERIDOS -->
+                <div class="file-upload-section">
+                    <h3>📎 Documentos de Soporte Requeridos</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Todos los documentos son obligatorios excepto donde se indique lo contrario.</p>
+
+                    <!-- 1. Soporte de Factura -->
+                    <div class="file-upload-item">
+                        <label for="numero-factura">1. Número de Factura del Producto <span class="required-field">*</span></label>
+                        <input type="text" id="numero-factura" class="form-control" required 
+                               placeholder="Ej: FAC2024-12345" style="margin-bottom: 10px;">
+                        <label for="archivo-factura">Soporte PDF de la Factura <span class="required-field">*</span></label>
+                        <input type="file" id="archivo-factura" accept=".pdf" required>
+                        <div class="file-status-text" id="status-archivo-factura">No se ha seleccionado ningún archivo.</div>
+                    </div>
+
+                    <!-- 2. Registro Fotográfico del Producto -->
+                    <div class="file-upload-item">
+                        <label for="foto-producto-novedad">2. Registro Fotográfico del Producto con la Novedad <span class="required-field">*</span></label>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                            Fotos claras del producto mostrando las condiciones de la novedad reportada.
+                        </p>
+                        <input type="file" id="foto-producto-novedad" accept="image/*" multiple required>
+                        <div class="file-status-text" id="status-foto-producto">No se han seleccionado archivos.</div>
+                    </div>
+
+                    <!-- 3. Fecha de Apertura del Producto (OPCIONAL) -->
+                    <div class="file-upload-item">
+                        <label for="fecha-apertura-producto">3. Fecha de Apertura del Producto <span class="optional-field">(Opcional)</span></label>
+                        <input type="date" id="fecha-apertura-producto" class="form-control" style="margin-bottom: 10px;">
+                        <label for="foto-etiqueta-apertura">Registro Fotográfico de la Etiqueta de Fecha de Apertura <span class="optional-field">(Opcional)</span></label>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                            Solo requerido cuando aplique fecha de apertura del producto.
+                        </p>
+                        <input type="file" id="foto-etiqueta-apertura" accept="image/*">
+                        <div class="file-status-text" id="status-foto-etiqueta">No se ha seleccionado ningún archivo.</div>
+                    </div>
+
+                    <!-- 4. Registro de Temperaturas -->
+                    <div class="file-upload-item">
+                        <label for="fecha-recepcion-producto">Fecha de Recepción del Producto <span class="required-field">*</span></label>
+                        <input type="date" id="fecha-recepcion-producto" class="form-control" required style="margin-bottom: 10px;">
+                        <div class="date-range-info" id="rango-temperaturas-info">
+                            Seleccione la fecha de recepción para ver el rango de fechas de los registros de temperatura requeridos.
+                        </div>
+                        
+                        <label for="archivo-temperaturas" style="margin-top: 15px;">4. Registro de Temperatura de Equipos de Refrigeración <span class="required-field">*</span></label>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                            Registros de temperatura desde la fecha de recepción hasta la fecha actual. Formatos aceptados: PDF, Excel, CSV, Imágenes.
+                        </p>
+                        <input type="file" id="archivo-temperaturas" accept=".pdf,.xls,.xlsx,.csv,.jpg,.jpeg,.png" multiple required>
+                        <div class="file-status-text" id="status-archivo-temperaturas">No se han seleccionado archivos.</div>
+                    </div>
+
+                    <!-- 5. Formato de Recepción -->
+                    <div class="file-upload-item">
+                        <label for="formato-recepcion-pv">5. Formato de Recepción en Punto de Venta <span class="required-field">*</span></label>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                            Formato de recepción del producto asociado a la PQRS. Formatos aceptados: PDF, Excel.
+                        </p>
+                        <input type="file" id="formato-recepcion-pv" accept=".pdf,.xls,.xlsx" required>
+                        <div class="file-status-text" id="status-formato-recepcion">No se ha seleccionado ningún archivo.</div>
+                    </div>
+
+                    <!-- Documentos Adicionales (Opcional) -->
+                    <div class="file-upload-item">
+                        <h4>Documentos Adicionales <span class="optional-field">(Opcional)</span></h4>
+                        <label for="documentos-adicionales">Otros documentos de soporte</label>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                            Cualquier documento adicional que considere relevante para la PQR.
+                        </p>
+                        <input type="file" id="documentos-adicionales" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xls,.xlsx" multiple>
+                        <div class="file-status-text" id="status-documentos-adicionales">No se han seleccionado archivos.</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding: 30px;">
+                    <button type="submit" class="btn btn-primary" style="font-size: 18px; padding: 18px 40px;">
+                        ✅ Registrar PQR
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="seguimiento" class="tab-content">
+            <h2>🔍 Seguimiento de PQR</h2>
+            
+            <div class="form-section">
+                <div class="form-group">
+                    <input type="text" id="buscar-pqr" class="form-control" 
+                           placeholder="🔍 Buscar por número de ticket, email o cliente...">
+                    <button class="btn btn-primary" onclick="buscarPQR()">Buscar PQR</button>
+                    <button class="btn btn-success" onclick="cargarTodasPQRs()">Ver Todas</button>
+                </div>
+
+                <div id="resultados-seguimiento">
+                    <div class="no-pqrs-message">
+                        <h3>📋 No hay PQRs registradas</h3>
+                        <p>Cuando se registren PQRs en el sistema, aparecerán aquí para su seguimiento.</p>
+                        <p>Utiliza la sección "Nueva PQR" para crear tu primera solicitud.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="trazabilidad" class="tab-content">
+            <h2>📋 Trazabilidad de PQR</h2>
+            <div class="form-section">
+                <div class="no-pqrs-message">
+                    <h3>📋 Selecciona una PQR para ver su trazabilidad</h3>
+                    <p>La información de trazabilidad aparecerá aquí cuando selecciones una PQR específica desde la sección de seguimiento.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="gestion-usuarios" class="tab-content">
+            <h2>👥 Gestión de Usuarios</h2>
+            <div class="form-section">
+                <h3>Crear Nuevo Usuario</h3>
+                <div id="user-alert" class="alert hidden"></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="new-user-name">Nombre</label>
+                        <input type="text" id="new-user-name" class="form-control" placeholder="Nombre del usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-email">Email</label>
+                        <input type="email" id="new-user-email" class="form-control" placeholder="email@dominio.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-role">Rol</label>
+                        <select id="new-user-role" class="form-control">
+                            <option value="registrador">Registrador PQR</option>
+                            <option value="calidad">Agente de Calidad</option>
+                            <option value="cliente">Cliente</option>
+                            <option value="administrador">Administrador</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-user-password">Contraseña</label>
+                        <input type="password" id="new-user-password" class="form-control" placeholder="Contraseña">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1; text-align: center;">
+                        <button class="btn btn-success" onclick="crearUsuario()">Crear Usuario</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section" style="margin-top: 30px;">
+                <h3>Lista de Usuarios Existentes</h3>
+                <div id="users-list">
+                    <div class="no-pqrs-message">
+                        <p>Cargando usuarios...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="agentes" class="tab-content">
+            <h2>👨‍💼 Gestión de Agentes</h2>
+            <div class="form-section">
+                <h3>Agentes Asignables</h3>
+                <p>Aquí se listan los agentes que pueden tomar casos. Esto es configurable por el administrador.</p>
+                <ul style="list-style-type: disc; padding-left: 20px; margin-top: 20px;">
+                    <li><strong>María González</strong> (Calidad) - Especialidad: Control de Calidad, Análisis de Lotes.</li>
+                    <li><strong>Juan Pérez</strong> (Logística) - Especialidad: Problemas de Entrega, Daños en Transporte.</li>
+                    <li><strong>Ana Martínez</strong> (Producción) - Especialidad: Fallas en Proceso, Desviaciones de Receta.</li>
+                    <li><strong>Luis Castro</strong> (Servicio al Cliente) - Especialidad: Atención General, Resolución de Conflictos.</li>
+                    <li><strong>Sofía Rojas</strong> (Legal) - Especialidad: Cumplimiento Normativo, Reclamos Legales.</li>
+                    <li><strong>Roberto Diaz</strong> (I+D) - Especialidad: Desarrollo de Productos, Mejoras de Fórmula.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="dashboard" class="tab-content">
+            <h2>📊 Dashboard de PQR</h2>
+            <div id="stats-container">
+                <div class="no-pqrs-message">
+                    <p>Cargando estadísticas...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <button class="ai-toggle hidden" id="ai-toggle-btn">🤖</button>
+    <div class="ai-assistant" id="ai-assistant-panel">
+        <div class="ai-header">
+            <h3>Asistente IA</h3>
+            <span class="close" onclick="toggleAiAssistant(false)">&times;</span>
+        </div>
+        <div class="ai-chat" id="ai-chat-box">
+            <div class="ai-message bot">
+                <div class="avatar">IA</div>
+                <div class="text">Hola, ¿en qué puedo ayudarte hoy con la gestión de PQR?</div>
+            </div>
+        </div>
+        <div class="ai-input-area">
+            <input type="text" class="ai-input" id="ai-input-field" placeholder="Escribe tu pregunta...">
+            <button class="ai-send-btn" id="ai-send-btn">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Variables Globales ---
+        let jwtToken = null;
+        let currentUser = null;
+        let uploadedFiles = {};
+
+        // --- Funciones de Autenticación ---
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const loginBtn = document.querySelector('#login-form button[type="submit"]');
+            
+            try {
+                loginBtn.textContent = 'Iniciando sesión...';
+                loginBtn.disabled = true;
+                
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    jwtToken = data.access_token;
+                    currentUser = data.user;
+                    localStorage.setItem('jwt_token', jwtToken);
+                    localStorage.setItem('current_user', JSON.stringify(currentUser));
+                    
+                    showAlert('login-alert', 'Iniciando sesión exitosamente...', 'success');
+                    
+                    setTimeout(() => {
+                        showMainApp();
+                    }, 1000);
+                } else {
+                    showAlert('login-alert', data.error || 'Error al iniciar sesión', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('login-alert', 'Error de conexión. Intenta nuevamente.', 'error');
+            } finally {
+                loginBtn.textContent = 'Iniciar Sesión';
+                loginBtn.disabled = false;
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('current_user');
+            jwtToken = null;
+            currentUser = null;
+            
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('ai-toggle-btn').classList.add('hidden');
+        }
+
+        function showMainApp() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('ai-toggle-btn').classList.remove('hidden');
+            
+            // Actualizar información del usuario
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-role').textContent = `(${currentUser.role})`;
+            
+            // Cargar datos iniciales
+            cargarEstadisticas();
+            if (currentUser.role === 'administrador') {
+                cargarUsuarios();
+            }
+            
+            showTab('nueva-pqr');
+        }
+
+        function showAlert(elementId, message, type) {
+            const alertElement = document.getElementById(elementId);
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type}`;
+            alertElement.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertElement.classList.add('hidden');
+            }, 5000);
+        }
+
+        // --- Funciones principales ---
+        async function apiRequest(url, options = {}) {
+            const config = {
+                headers: {
+                    ...options.headers
+                },
+                ...options
+            };
+
+            if (jwtToken) {
+                config.headers['Authorization'] = `Bearer ${jwtToken}`;
+            }
+
+            // No agregar Content-Type para FormData
+            if (!(options.body instanceof FormData)) {
+                config.headers['Content-Type'] = 'application/json';
+            }
+
+            const response = await fetch(url, config);
+            
+            if (response.status === 401) {
+                logout();
+                throw new Error('Sesión expirada');
+            }
+            
+            return response;
+        }
+
+        // --- Funcionalidad de archivos ---
+        function setupFileHandlers() {
+            const fileInputs = [
+                'archivo-factura',
+                'foto-producto-novedad', 
+                'foto-etiqueta-apertura',
+                'archivo-temperaturas',
+                'formato-recepcion-pv',
+                'documentos-adicionales'
+            ];
+
+            fileInputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('change', (e) => handleFileChange(inputId, e.target.files));
+                }
+            });
+
+            // Configurar listener para fecha de recepción
+            document.getElementById('fecha-recepcion-producto').addEventListener('change', updateTemperaturaRangeInfo);
+        }
+
+        function handleFileChange(inputId, files) {
+            const statusElement = document.getElementById(`status-${inputId}`);
+            
+            if (files.length > 0) {
+                uploadedFiles[inputId] = Array.from(files);
+                const fileNames = Array.from(files).map(f => f.name).join(', ');
+                statusElement.textContent = `Archivo(s) seleccionado(s): ${fileNames}`;
+                statusElement.style.color = '#27ae60';
+            } else {
+                delete uploadedFiles[inputId];
+                statusElement.textContent = 'No se ha seleccionado ningún archivo.';
+                statusElement.style.color = '#6c757d';
+            }
+        }
+
+        function updateTemperaturaRangeInfo() {
+            const fechaRecepcion = document.getElementById('fecha-recepcion-producto').value;
+            const infoElement = document.getElementById('rango-temperaturas-info');
+            
+            if (fechaRecepcion) {
+                const fechaHoy = new Date().toISOString().split('T')[0];
+                infoElement.innerHTML = `
+                    <strong>Rango de fechas requerido:</strong><br>
+                    Desde: <strong>${fechaRecepcion}</strong><br>
+                    Hasta: <strong>${fechaHoy}</strong><br>
+                    <em>Los registros de temperatura deben cubrir todo este período.</em>
+                `;
+                infoElement.style.background = '#e8f5e8';
+                infoElement.style.borderColor = '#27ae60';
+            } else {
+                infoElement.textContent = 'Seleccione la fecha de recepción para ver el rango de fechas de los registros de temperatura requeridos.';
+                infoElement.style.background = '#e3f2fd';
+                infoElement.style.borderColor = '#2196f3';
+            }
+        }
+
+        // --- Funcionalidad de PQR ---
+        document.getElementById('pqr-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            
+            // Recopilar datos básicos
+            const fields = [
+                'email-contacto', 'cliente', 'tipo-pqr', 'asunto-detalle',
+                'nombre-producto', 'lote', 'fecha-vencimiento', 'cantidad-gramos',
+                'devolucion', 'descripcion', 'numero-factura', 
+                'fecha-apertura-producto', 'fecha-recepcion-producto'
+            ];
+            
+            fields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element && element.value) {
+                    formData.append(field, element.value);
+                }
+            });
+
+            // Agregar archivos
+            Object.keys(uploadedFiles).forEach(inputId => {
+                const files = uploadedFiles[inputId];
+                if (files && files.length > 0) {
+                    if (files.length === 1) {
+                        formData.append(inputId, files[0]);
+                    } else {
+                        files.forEach((file, index) => {
+                            formData.append(`${inputId}[${index}]`, file);
+                        });
+                    }
+                }
+            });
+
+            try {
+                const submitBtn = document.querySelector('#pqr-form button[type="submit"]');
+                submitBtn.textContent = 'Registrando PQR...';
+                submitBtn.disabled = true;
+
+                const response = await apiRequest('/api/pqrs', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert('pqr-alert', `PQR creada exitosamente. Ticket: ${data.ticket_id}`, 'success');
+                    document.getElementById('pqr-form').reset();
+                    uploadedFiles = {};
+                    
+                    // Resetear estados de archivos
+                    const statusElements = document.querySelectorAll('.file-status-text');
+                    statusElements.forEach(el => {
+                        el.textContent = 'No se ha seleccionado ningún archivo.';
+                        el.style.color = '#6c757d';
+                    });
+                    
+                    // Cambiar a la pestaña de seguimiento después de 3 segundos
+                    setTimeout(() => {
+                        showTab('seguimiento');
+                        cargarTodasPQRs();
+                    }, 3000);
+                } else {
+                    showAlert('pqr-alert', data.error || 'Error al crear PQR', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('pqr-alert', 'Error de conexión. Intenta nuevamente.', 'error');
+            } finally {
+                const submitBtn = document.querySelector('#pqr-form button[type="submit"]');
+                submitBtn.textContent = '✅ Registrar PQR';
+                submitBtn.disabled = false;
+            }
+        });
+
+        async function cargarTodasPQRs() {
+            try {
+                const response = await apiRequest('/api/pqrs');
+                const pqrs = await response.json();
+                
+                mostrarPQRs(pqrs);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultados-seguimiento').innerHTML = `
+                    <div class="no-pqrs-message">
+                        <h3>❌ Error al cargar PQRs</h3>
+                        <p>No se pudieron cargar las PQRs. Intenta nuevamente.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function buscarPQR() {
+            const query = document.getElementById('buscar-pqr').value.trim();
+            
+            if (!query) {
+                cargarTodasPQRs();
+                return;
+            }
+
+            try {
+                const response = await apiRequest(`/api/pqrs?search=${encodeURIComponent(query)}`);
+                const pqrs = await response.json();
+                
+                mostrarPQRs(pqrs);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultados-seguimiento').innerHTML = `
+                    <div class="no-pqrs-message">
+                        <h3>❌ Error en la búsqueda</h3>
+                        <p>No se pudo realizar la búsqueda. Intenta nuevamente.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function mostrarPQRs(pqrs) {
+            const container = document.getElementById('resultados-seguimiento');
+            
+            if (pqrs.length === 0) {
+                container.innerHTML = `
+                    <div class="no-pqrs-message">
+                        <h3>📋 No se encontraron PQRs</h3>
+                        <p>No hay PQRs que coincidan con los criterios de búsqueda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="form-section"><h3>Resultados de PQR</h3>';
+            
+            pqrs.forEach(pqr => {
+                const statusColor = pqr.status === 'abierto' ? '#f39c12' : 
+                                  pqr.status === 'en_proceso' ? '#3498db' : '#27ae60';
+                
+                html += `
+                    <div class="form-section" style="margin-bottom: 15px; border-left: 4px solid ${statusColor};">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h4>${pqr.ticket_id}</h4>
+                            <span style="background: ${statusColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">
+                                ${pqr.status}
+                            </span>
+                        </div>
+                        <p><strong>Cliente:</strong> ${pqr.client_name || 'N/A'}</p>
+                        <p><strong>Producto:</strong> ${pqr.product_name}</p>
+                        <p><strong>Tipo:</strong> ${pqr.type}</p>
+                        <p><strong>Asunto:</strong> ${pqr.subject}</p>
+                        <p><strong>Fecha:</strong> ${new Date(pqr.created_at).toLocaleDateString()}</p>
+                        <p><strong>Descripción:</strong> ${pqr.description.substring(0, 100)}...</p>
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-primary" onclick="verDetallesPQR('${pqr.id}')">Ver Detalles</button>
+                            <button class="btn btn-success" onclick="agregarComentario('${pqr.id}')">Agregar Comentario</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function verDetallesPQR(pqrId) {
+            alert(`Ver detalles de PQR: ${pqrId}`);
+            // Aquí implementarías la lógica para mostrar detalles completos
+        }
+
+        function agregarComentario(pqrId) {
+            alert(`Agregar comentario a PQR: ${pqrId}`);
+            // Aquí implementarías la lógica para agregar comentarios
+        }
+
+        // --- Gestión de usuarios ---
+        async function crearUsuario() {
+            const name = document.getElementById('new-user-name').value.trim();
+            const email = document.getElementById('new-user-email').value.trim();
+            const password = document.getElementById('new-user-password').value.trim();
+            const role = document.getElementById('new-user-role').value;
+
+            if (!name || !email || !password) {
+                showAlert('user-alert', 'Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            try {
+                const response = await apiRequest('/api/users', {
+                    method: 'POST',
+                    body: JSON.stringify({ name, email, password, role })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert('user-alert', 'Usuario creado exitosamente', 'success');
+                    document.getElementById('new-user-name').value = '';
+                    document.getElementById('new-user-email').value = '';
+                    document.getElementById('new-user-password').value = '';
+                    cargarUsuarios();
+                } else {
+                    showAlert('user-alert', data.error || 'Error al crear usuario', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('user-alert', 'Error de conexión', 'error');
+            }
+        }
+
+        async function cargarUsuarios() {
+            if (currentUser.role !== 'administrador') {
+                document.getElementById('users-list').innerHTML = `
+                    <div class="no-pqrs-message">
+                        <h3>⚠️ Acceso Denegado</h3>
+                        <p>Solo los administradores pueden ver la lista de usuarios.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await apiRequest('/api/users');
+                const users = await response.json();
+                
+                let html = '<table style="width: 100%; border-collapse: collapse;">';
+                html += '<thead><tr style="background: #f8f9fa;"><th style="padding: 12px; border: 1px solid #dee2e6;">Nombre</th><th style="padding: 12px; border: 1px solid #dee2e6;">Email</th><th style="padding: 12px; border: 1px solid #dee2e6;">Rol</th></tr></thead>';
+                html += '<tbody>';
+                
+                users.forEach(user => {
+                    html += `
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">${user.name}</td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">${user.email}</td>
+                            <td style="padding: 12px; border: 1px solid #dee2e6;">${user.role}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                document.getElementById('users-list').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('users-list').innerHTML = `
+                    <div class="no-pqrs-message">
+                        <h3>❌ Error al cargar usuarios</h3>
+                        <p>No se pudieron cargar los usuarios.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // --- Dashboard y estadísticas ---
+        async function cargarEstadisticas() {
+            try {
+                const response = await apiRequest('/api/stats');
+                const stats = await response.json();
+                
+                const statsHtml = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: bold; margin-bottom: 8px;">${stats.total_pqrs}</div>
+                            <div style="font-size: 14px; opacity: 0.9;">PQRs Registradas (Total)</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: bold; margin-bottom: 8px;">${stats.open_pqrs}</div>
+                            <div style="font-size: 14px; opacity: 0.9;">PQRs Abiertas</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: bold; margin-bottom: 8px;">${stats.in_process_pqrs}</div>
+                            <div style="font-size: 14px; opacity: 0.9;">PQRs En Proceso</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: bold; margin-bottom: 8px;">${stats.closed_pqrs}</div>
+                            <div style="font-size: 14px; opacity: 0.9;">PQRs Cerradas</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('stats-container').innerHTML = statsHtml;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="no-pqrs-message">
+                        <h3>❌ Error al cargar estadísticas</h3>
+                        <p>No se pudieron cargar las estadísticas del dashboard.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // --- Funcionalidad de pestañas ---
+        function showTab(tabId) {
+            // Ocultar todos los contenidos de las pestañas
+            document.querySelectorAll('.tab-content').forEach(tabContent => {
+                tabContent.classList.remove('active');
+            });
+
+            // Desactivar todos los botones de las pestañas
+            document.querySelectorAll('.nav-tab').forEach(navTab => {
+                navTab.classList.remove('active');
+            });
+
+            // Mostrar el contenido de la pestaña activa
+            document.getElementById(tabId).classList.add('active');
+
+            // Activar el botón de la pestaña correspondiente
+            document.querySelector(`.nav-tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+
+            // Cargar datos específicos de la pestaña
+            if (tabId === 'dashboard') {
+                cargarEstadisticas();
+            } else if (tabId === 'seguimiento') {
+                cargarTodasPQRs();
+            } else if (tabId === 'gestion-usuarios' && currentUser?.role === 'administrador') {
+                cargarUsuarios();
+            }
+        }
+
+        // --- Asistente de IA ---
+        const aiToggleBtn = document.getElementById('ai-toggle-btn');
+        const aiAssistantPanel = document.getElementById('ai-assistant-panel');
+        const aiChatBox = document.getElementById('ai-chat-box');
+        const aiInputField = document.getElementById('ai-input-field');
+        const aiSendBtn = document.getElementById('ai-send-btn');
+
+        function toggleAiAssistant(show) {
+            if (show === undefined) {
+                aiAssistantPanel.style.display = aiAssistantPanel.style.display === 'flex' ? 'none' : 'flex';
+            } else {
+                aiAssistantPanel.style.display = show ? 'flex' : 'none';
+            }
+        }
+
+        aiToggleBtn.addEventListener('click', () => toggleAiAssistant());
+
+        aiSendBtn.addEventListener('click', sendAIMessage);
+        aiInputField.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendAIMessage();
+            }
+        });
+
+        async function sendAIMessage() {
+            const userMessage = aiInputField.value.trim();
+            if (userMessage === '') return;
+
+            addMessageToChat(userMessage, 'user');
+            aiInputField.value = '';
+            aiChatBox.scrollTop = aiChatBox.scrollHeight;
+
+            try {
+                const response = await apiRequest('/api/ai-chat', {
+                    method: 'POST',
+                    body: JSON.stringify({ message: userMessage })
+                });
+
+                const data = await response.json();
+                const reply = data.reply || 'Lo siento, no pude procesar tu mensaje.';
+                
+                addMessageToChat(reply, 'bot');
+                aiChatBox.scrollTop = aiChatBox.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+                addMessageToChat('Error al comunicar con el asistente IA. Verifica que esté configurado correctamente.', 'bot');
+                aiChatBox.scrollTop = aiChatBox.scrollHeight;
+            }
+        }
+
+        function addMessageToChat(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('ai-message', sender);
+            
+            const avatarDiv = document.createElement('div');
+            avatarDiv.classList.add('avatar');
+            avatarDiv.textContent = sender === 'user' ? 'Tú' : 'IA';
+
+            const textDiv = document.createElement('div');
+            textDiv.classList.add('text');
+            textDiv.textContent = message;
+
+            if (sender === 'user') {
+                messageDiv.appendChild(textDiv);
+                messageDiv.appendChild(avatarDiv);
+            } else {
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(textDiv);
+            }
+            aiChatBox.appendChild(messageDiv);
+        }
+
+        // --- Inicialización ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configurar manejadores de archivos
+            setupFileHandlers();
+            
+            // Verificar si hay una sesión guardada
+            const savedToken = localStorage.getItem('jwt_token');
+            const savedUser = localStorage.getItem('current_user');
+            
+            if (savedToken && savedUser) {
+                jwtToken = savedToken;
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+            }
+        });
+    </script>
+</body>
+</html>
