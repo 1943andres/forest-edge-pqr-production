@@ -5,3 +5,13 @@ builder = "nixpacks"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
 restartPolicyType = "always"
+EOFogtore.gitkeep<< 'EOF'
+
+Aordoñez@COORJNR001 MINGW64 ~/OneDrive - ALIMENTOS ENRIKO/Documentos/Escritorio/Programar/my_pqr_backend (main)
+$ [build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "always"
