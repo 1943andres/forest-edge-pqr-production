@@ -1,5 +1,7 @@
+# En tu local
+cat > requirements.txt << 'EOF'
 Flask==2.3.3
-Flask-SQLAlchemy==3.1.1
+Flask-SQLAlchemy==3.0.5
 Flask-CORS==4.0.0
 Flask-JWT-Extended==4.5.3
 python-dotenv==1.0.0
@@ -9,3 +11,4 @@ psycopg2-binary==2.9.9
 openai==1.6.1
 gunicorn==21.2.0
 requests==2.31.0
+EOF
